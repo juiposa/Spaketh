@@ -1,12 +1,10 @@
 {
   "Author": "Juiposa",
   "Name": "Spaketh",
-  "Punchline": "What if Perfect Alex spoke?",
-  "Description": "A description that shows up in /xlplugins. List any major slash-command(s).",
+  "Punchline": "What if Alexander spoke?",
+  "Description": "",
   "ApplicableVersion": "any",
   "Tags": [
-    "sample",
-    "plugin",
-    "goats"
+    "plugin"
   ]
 }
