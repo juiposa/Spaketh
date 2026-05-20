@@ -3,9 +3,9 @@
         "Author": "Juiposa",
         "Name": "Spaketh",
         "Punchline": "What if Alexander spoke?",
-        "Description": "/spaketh",
+        "Description": "Plays the voicelines of voiced bosses on unvoiced ones.\nCurrently supported:\n\t- Alexander Resurrected (Windhurst) -> Alexander Prime and Perfect Alex\n/spaketh - toggle the plugin on and off",
         "InternalName": "SpakethPlugin",
-        "AssemblyVersion": "0.0.2.0",
+        "AssemblyVersion": "0.0.3.0",
         "ApplicableVersion": "any",
         "Tags": [
             "plugin"
@@ -18,8 +18,8 @@
         "IconUrl": "",
         "AcceptsFeedback": true,
         "IsTestingExclusive": "False",
-        "DownloadLinkInstall": "https://github.com/juiposa/Spaketh/releases/download/v0.0.2/latest.zip",
-        "DownloadLinkTesting": "https://github.com/juiposa/Spaketh/releases/download/v0.0.2/latest.zip",
-        "DownloadLinkUpdate": "https://github.com/juiposa/Spaketh/releases/download/v0.0.2/latest.zip"
+        "DownloadLinkInstall": "https://github.com/juiposa/Spaketh/releases/download/v0.0.3/latest.zip",
+        "DownloadLinkTesting": "https://github.com/juiposa/Spaketh/releases/download/v0.0.3/latest.zip",
+        "DownloadLinkUpdate": "https://github.com/juiposa/Spaketh/releases/download/v0.0.3/latest.zip"
     }
 ]

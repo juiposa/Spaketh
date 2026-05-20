@@ -16,7 +16,7 @@ public sealed class GameHook : IDisposable
     private readonly Hook<ShowBattleTalkSound>? showBattleTalkSoundHook;
     
 
-    public static readonly List<uint> ActiveInstances = new List<uint> { 887, 583, 587 }; //TEA, A12, A12S
+    public static readonly List<uint> ActiveInstances = new List<uint> { 1205, 887, 583, 587 }; //Tuli Inn, TEA, A12, A12S
 
     internal unsafe GameHook(IGameInteropProvider interop)
     {
@@ -58,70 +58,55 @@ public sealed class GameHook : IDisposable
     private unsafe void HookShowBattleTalk(UIModule* self, CStringPointer sender, CStringPointer talk, float duration, byte style)
     {
         Plugin.Log.Debug($"HOOK {sender} {talk}");
-        if (!ActiveInstances.Contains(Plugin.ClientState.TerritoryType))
-        {
-            Plugin.Log.Debug($"SKIPPING Not in Supported Instance");
-            showBattleTalkHook!.Original(self, sender, talk, duration, style);
-            return;
-        }
-        
-        var (replacement, newDuration) = Voicelines.ReplaceVoiceline(talk.ToString());
-        if (replacement != null)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(replacement);
-            fixed (byte* pbyte = bytes)
-            {
-                showBattleTalkHook!.Original(self, sender, new CStringPointer(pbyte), newDuration, style);
-            }
-            return;
-        }
-        showBattleTalkHook!.Original(self, sender, talk, duration, style);
+        var proceed = () => showBattleTalkHook!.Original(self, sender, talk, duration, style);
+        var intercept = (string n, string t, uint d) => showBattleTalkHook!.Original(self, Stocs(n), Stocs(t), d, style);
+        ProcessHook(sender.ToString(), talk.ToString(), proceed, intercept);
     }
     
     private unsafe void HookShowBattleTalkImage(UIModule* self, CStringPointer sender, CStringPointer talk, float duration, uint image, byte style, int sound, uint entityId)
     {
         Plugin.Log.Debug($"HOOK IMAGE {sender} {talk}");
-        if (!ActiveInstances.Contains(Plugin.ClientState.TerritoryType))
-        {
-            Plugin.Log.Debug($"SKIPPING Not in Supported Instance");
-            showBattleTalkImageHook!.Original(self, sender, talk, duration, image, style, sound, entityId);
-            return;
-        }
-        
-        var (replacement, newDuration) = Voicelines.ReplaceVoiceline(talk.ToString());
-        if (replacement != null)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(replacement);
-            fixed (byte* pbyte = bytes)
-            {
-                showBattleTalkImageHook!.Original(self, sender, new CStringPointer(pbyte), newDuration, image, style, sound, entityId);
-            }
-            return;
-        }
-        showBattleTalkImageHook!.Original(self, sender, talk, duration, image, style, sound, entityId);
+        var proceed = () => showBattleTalkImageHook!.Original(self, sender, talk, duration, image, style, sound, entityId);
+        var intercept = (string n, string t, uint d) => showBattleTalkImageHook!.Original(self, Stocs(n), Stocs(t), d, image, style, sound, entityId);
+        ProcessHook(sender.ToString(), talk.ToString(), proceed, intercept);
     }
     
     private unsafe void HookShowBattleTalkSound(UIModule* self, CStringPointer sender, CStringPointer talk, float duration, int sound, byte style)
     {
         Plugin.Log.Debug($"HOOK SOUND {sender} {talk}");
+        var proceed = () => showBattleTalkSoundHook!.Original(self, sender, talk, duration, sound, style);
+        var intercept = (string n, string t, uint d) => showBattleTalkSoundHook!.Original(self, Stocs(n), Stocs(t), d, sound, style);
+        ProcessHook(sender.ToString(), talk.ToString(), proceed, intercept);
+    }
+
+    private void ProcessHook(string sender, string originalLine, Action proceed,  Delegate intercept)
+    {
+        
         if (!ActiveInstances.Contains(Plugin.ClientState.TerritoryType))
         {
-            Plugin.Log.Debug($"SKIPPING Not in Supported Instance");
-            showBattleTalkSoundHook!.Original(self, sender, talk, duration, sound, style);
+            Plugin.Log.Debug("SKIP Not in Supported Instance");
+            proceed.Invoke();
             return;
         }
         
-        var (replacement, newDuration) = Voicelines.ReplaceVoiceline(talk.ToString());
+        var (replacement, newDuration, newName) = Voicelines.ReplaceVoiceline(originalLine);
         if (replacement != null)
         {
-            byte[] bytes = Encoding.UTF8.GetBytes(replacement);
-            fixed (byte* pbyte = bytes)
-            {
-                showBattleTalkSoundHook!.Original(self, sender, new CStringPointer(pbyte), newDuration, sound, style);
-            }
+            var callName = newName ?? sender;
+            Plugin.Log.Debug($"INTERCEPT {newName} {replacement}");
+            intercept.DynamicInvoke(callName, replacement, newDuration);
             return;
         }
-        showBattleTalkSoundHook!.Original(self, sender, talk, duration, sound, style);
+        proceed.Invoke();
+    }
+
+    private unsafe byte* Stocs(string str)
+    {
+        byte[] bytes = Encoding.UTF8.GetBytes(str);
+        fixed (byte* pbyte = bytes)
+        {
+            return pbyte;
+        }
     }
 
     public void Dispose()

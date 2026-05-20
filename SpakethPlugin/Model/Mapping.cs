@@ -8,4 +8,6 @@ public class Mapping
     public uint Original = 0;
     [JsonProperty(propertyName: "replacement")]
     public uint Replacement = 0;
+    [JsonProperty(propertyName: "name")]
+    public string? Name;
 }

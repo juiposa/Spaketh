@@ -14,4 +14,4 @@ The first supported boss and the POC of this is Alexander Resurrected (Windhurt)
 
 ---
 
-Thanks to [VfxEdit](https://github.com/0ceal0t/Dalamud-VFXEditor) and [PvPAnnouncer](https://github.com/spide-r/PvPAnnouncer) for resources and examples.
+Thanks to [VfxEdit](https://github.com/0ceal0t/Dalamud-VFXEditor), [PvPAnnouncer](https://github.com/spide-r/PvPAnnouncer), and [Xpahtalo](https://github.com/Xpahtalo/BurntToast) for resources, examples, and interops.

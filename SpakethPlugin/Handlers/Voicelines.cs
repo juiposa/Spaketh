@@ -10,9 +10,10 @@ namespace Spaketh.Handlers;
 public static class Voicelines
 {
     private static Dictionary<string, Voiceline> voicelines;
-    private static Dictionary<string, uint>? mappings;
+    private static Dictionary<string, (uint, string?)>? mappings;
     static Voicelines()
     {   
+        // TODO regenerate whenever the language changes
         // get declared voice lines from files
         string pluginDirectory = Plugin.PluginInterface.AssemblyLocation.DirectoryName;
         string filePath = Path.Combine(pluginDirectory, "Data", "source_npc.json");
@@ -39,25 +40,25 @@ public static class Voicelines
         text = reader2.ReadToEnd();
 
         var rawMappings = JsonConvert.DeserializeObject<Mapping[]>(text);
-        var richMap = new Dictionary<string, uint>();
+        var richMap = new Dictionary<string, (uint, string?)>();
         foreach (var value in rawMappings)
         {
             var originalText = textDataSheet[value.Original].Text.ExtractText();
-            richMap[originalText] = value.Replacement;
+            richMap[originalText] = (value.Replacement, value.Name);
         }
 
         mappings = richMap;
     }
     
-    public static (string?, uint) ReplaceVoiceline(string original)
+    public static (string?, uint, string?) ReplaceVoiceline(string original)
     {
-        if (mappings.TryGetValue(original, out var replacement)) // if there's a mapping
+        if (mappings.TryGetValue(original, out var rep)) // if there is a mapping 
         {
-            var voiceline = voicelines[replacement.ToString()];
-            PlayVoiceline(replacement); // play the voiceline
-            return (voiceline.Text, voiceline.Duration); // return the new text
+            var voiceline = voicelines[rep.Item1.ToString()];
+            PlayVoiceline(rep.Item1); // play the voiceline
+            return (voiceline.Text, voiceline.Duration, rep.Item2); // return the new text
         }
-        return (null, 0); // otherwise just return back nothing
+        return (null, 0, ""); // otherwise just return back nothing
     }
     
     public static void PlayVoiceline(uint voicelineId)

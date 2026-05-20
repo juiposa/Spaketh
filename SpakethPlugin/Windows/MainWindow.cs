@@ -67,7 +67,7 @@ public class MainWindow : Window, IDisposable
         
         if (ImGui.Button("Test"))
         {
-            BattleTalk.ShowBattleTalk("Bug With a HUUUUUUGE Ass", 44655, 5);
+            BattleTalk.ShowBattleTalk("Bug With a HUUUUUUGE Ass", 27, 5);
         }
         ImGui.Spacing();
         
@@ -94,10 +94,5 @@ public class MainWindow : Window, IDisposable
             
         }
         
-    }
-
-    public void OnChat(IHandleableChatMessage message)
-    {
-
     }
 }
