@@ -3,6 +3,7 @@
         "Author": "Juiposa",
         "Name": "Spaketh",
         "Punchline": "What if Alexander spoke?",
+        "Description": "/spaketh",
         "InternalName": "Spaketh",
         "AssemblyVersion": "0.0.1.0",
         "ApplicableVersion": "any",
