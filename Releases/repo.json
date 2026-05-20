@@ -9,7 +9,7 @@
         "ApplicableVersion": "any",
         "Tags": [
             "plugin"
-        ]
+        ],
         "DalamudApiLevel": 15,
         "LoadRequiredState": 0,
         "LoadSync": false,

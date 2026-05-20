@@ -1,10 +1,23 @@
 {
-  "Author": "Juiposa",
-  "Name": "Spaketh",
-  "Punchline": "What if Alexander spoke?",
-  "Description": "",
-  "ApplicableVersion": "any",
-  "Tags": [
-    "plugin"
-  ]
+    "Author": "Juiposa",
+    "Name": "Spaketh",
+    "Punchline": "What if Alexander spoke?",
+    "Description": "/spaketh",
+    "InternalName": "Spaketh",
+    "AssemblyVersion": "0.0.1.0",
+    "ApplicableVersion": "any",
+    "Tags": [
+        "plugin"
+    ],
+    "DalamudApiLevel": 15,
+    "LoadRequiredState": 0,
+    "LoadSync": false,
+    "CanUnloadAsync": false,
+    "LoadPriority": 0,
+    "IconUrl": "",
+    "AcceptsFeedback": true,
+    "IsTestingExclusive": "False",
+    "DownloadLinkInstall": "https://github.com/juiposa/Spaketh/releases/download/v0.0.1/latest.zip",
+    "DownloadLinkTesting": "https://github.com/juiposa/Spaketh/releases/download/v0.0.1/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/juiposa/Spaketh/releases/download/v0.0.1/latest.zip"
 }
