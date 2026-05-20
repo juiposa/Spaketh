@@ -4,8 +4,8 @@
         "Name": "Spaketh",
         "Punchline": "What if Alexander spoke?",
         "Description": "/spaketh",
-        "InternalName": "Spaketh",
-        "AssemblyVersion": "0.0.1.0",
+        "InternalName": "SpakethPlugin",
+        "AssemblyVersion": "0.0.2.0",
         "ApplicableVersion": "any",
         "Tags": [
             "plugin"
@@ -18,8 +18,8 @@
         "IconUrl": "",
         "AcceptsFeedback": true,
         "IsTestingExclusive": "False",
-        "DownloadLinkInstall": "https://github.com/juiposa/Spaketh/releases/download/v0.0.1/latest.zip",
-        "DownloadLinkTesting": "https://github.com/juiposa/Spaketh/releases/download/v0.0.1/latest.zip",
-        "DownloadLinkUpdate": "https://github.com/juiposa/Spaketh/releases/download/v0.0.1/latest.zip"
+        "DownloadLinkInstall": "https://github.com/juiposa/Spaketh/releases/download/v0.0.2/latest.zip",
+        "DownloadLinkTesting": "https://github.com/juiposa/Spaketh/releases/download/v0.0.2/latest.zip",
+        "DownloadLinkUpdate": "https://github.com/juiposa/Spaketh/releases/download/v0.0.2/latest.zip"
     }
 ]

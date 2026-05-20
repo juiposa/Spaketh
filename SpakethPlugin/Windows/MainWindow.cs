@@ -44,7 +44,7 @@ public class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
-        // if (CurrentTerritory != Plugin.ClientState.TerritoryType)
+        // if (CurrentTerritory != Plugin.ClientState.TerritoryType) 
         // {
         //     if (GameHook.ActiveInstances.Contains(CurrentTerritory)) // if we are switching out of a supported instance
         //     {
