@@ -1,0 +1,94 @@
+﻿using System.IO;
+using Dalamud.Game.Command;
+using Dalamud.Interface.Windowing;
+using Dalamud.IoC;
+using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
+using SamplePlugin.Windows;
+using Spaketh.Handlers;
+using Spaketh.Windows;
+
+
+namespace Spaketh;
+
+public sealed class Plugin : IDalamudPlugin
+{
+    [PluginService] internal static IDalamudPluginInterface PluginInterface { get; private set; } = null!;
+    [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
+    [PluginService] internal static ICommandManager CommandManager { get; private set; } = null!;
+    [PluginService] internal static IClientState ClientState { get; private set; } = null!;
+    [PluginService] internal static IPlayerState PlayerState { get; private set; } = null!;
+    [PluginService] internal static IDataManager DataManager { get; private set; } = null!;
+    [PluginService] internal static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
+    [PluginService] internal static IPluginLog Log { get; private set; } = null!;
+    
+    private readonly IChatGui _chatGui;
+
+    private const string CommandName = "/spaketh";
+
+    public Configuration Configuration { get; init; }
+
+    public readonly WindowSystem WindowSystem = new("Spaketh");
+    private ConfigWindow ConfigWindow { get; init; }
+    private MainWindow MainWindow { get; init; }
+    
+    //Plugin Services
+
+    private GameHook GameHook;
+
+    public Plugin(IDalamudPluginInterface pluginInterface, IChatGui chatGui)
+    {
+        _chatGui = chatGui;
+        GameHook = new GameHook(GameInteropProvider);
+        Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+
+        ConfigWindow = new ConfigWindow(this);
+        MainWindow = new MainWindow(this, GameHook);
+
+        WindowSystem.AddWindow(ConfigWindow);
+        WindowSystem.AddWindow(MainWindow);
+
+        CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
+        {
+            HelpMessage = "Toggle enable/disable Spaketh's functionality"
+        });
+
+        // Tell the UI system that we want our windows to be drawn through the window system
+        PluginInterface.UiBuilder.Draw += WindowSystem.Draw;
+
+        // This adds a button to the plugin installer entry of this plugin which allows
+        // toggling the display status of the configuration ui
+        PluginInterface.UiBuilder.OpenConfigUi += ToggleConfigUi;
+
+        // Adds another button doing the same but for the main ui of the plugin
+        PluginInterface.UiBuilder.OpenMainUi += ToggleMainUi;
+        
+        InterfaceManager.Init(this, pluginInterface);
+        
+        _chatGui.ChatMessage += MainWindow.OnChat;
+    }
+
+    public void Dispose()
+    {
+        // Unregister all actions to not leak anything during disposal of plugin
+        PluginInterface.UiBuilder.Draw -= WindowSystem.Draw;
+        PluginInterface.UiBuilder.OpenConfigUi -= ToggleConfigUi;
+        PluginInterface.UiBuilder.OpenMainUi -= ToggleMainUi;
+        
+        WindowSystem.RemoveAllWindows();
+
+        ConfigWindow.Dispose();
+        MainWindow.Dispose();
+        GameHook.Dispose();
+
+        CommandManager.RemoveHandler(CommandName);
+    }
+
+    private void OnCommand(string command, string args)
+    {
+        Configuration.IsEnabled = !Configuration.IsEnabled;
+    }
+    
+    public void ToggleConfigUi() => ConfigWindow.Toggle();
+    public void ToggleMainUi() => MainWindow.Toggle();
+}
