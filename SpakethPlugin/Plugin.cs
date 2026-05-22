@@ -1,15 +1,13 @@
-﻿using System.IO;
-using Dalamud.Game.Command;
+﻿using Dalamud.Game.Command;
 using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using SamplePlugin.Windows;
-using Spaketh.Handlers;
-using Spaketh.Windows;
+using Spaketh;
+using SpakethPlugin.Handlers;
+using SpakethPlugin.Windows;
 
-
-namespace Spaketh;
+namespace SpakethPlugin;
 
 public sealed class Plugin : IDalamudPlugin
 {
@@ -19,6 +17,10 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] internal static IDataManager DataManager { get; private set; } = null!;
     [PluginService] internal static IGameInteropProvider GameInteropProvider { get; private set; } = null!;
     [PluginService] internal static IPluginLog Log { get; private set; } = null!;
+
+    [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
+
+    public static bool TestMode = false;
     
     private readonly IChatGui _chatGui;
 
@@ -32,16 +34,18 @@ public sealed class Plugin : IDalamudPlugin
     
     //Plugin Services
 
-    private GameHook GameHook;
+    private GameHook _gameHook;
+    private DebugHooks _debugHooks;
 
     public Plugin(IDalamudPluginInterface pluginInterface, IChatGui chatGui)
     {
         _chatGui = chatGui;
-        GameHook = new GameHook(GameInteropProvider);
+        _gameHook = new GameHook(GameInteropProvider);
+        _debugHooks = new DebugHooks(GameInteropProvider);
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         ConfigWindow = new ConfigWindow(this);
-        MainWindow = new MainWindow(this, GameHook);
+        MainWindow = new MainWindow(this, _gameHook);
 
         //WindowSystem.AddWindow(ConfigWindow);
         WindowSystem.AddWindow(MainWindow);
@@ -75,7 +79,8 @@ public sealed class Plugin : IDalamudPlugin
 
         ConfigWindow.Dispose();
         MainWindow.Dispose();
-        GameHook.Dispose();
+        _gameHook.Dispose();
+        _debugHooks.Dispose();
 
         CommandManager.RemoveHandler(CommandName);
     }

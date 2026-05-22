@@ -1,0 +1,147 @@
+{
+    "id": "038be898-c04c-4c74-ab03-b53409ab3a36",
+    "notes": "Alexander Resurrected from Windurst on Alexander and Perfect Alexander (A12N, A12S, TEA)",
+    "name": {
+        "en": "Alexander",
+        "ja": "アレクサンダー",
+        "de": "Alexander",
+        "fr": "Alexander"
+    },
+    "supported_languages": ["en", "ja", "de", "fr"],
+    "instance_ids": [583, 587, 887],
+    "lines": [
+        {
+            "intercept": {
+                "battletext_id": 13700
+            },
+            "game_text": {
+                "battletext_id": 44672
+            },
+            "sound_file": "sound/voice/vo_line/8206318_xlangx.scd",
+            "duration": 12
+        },
+        {
+            "intercept": {
+                "battletext_id": 13701
+            },
+            "game_text": {
+                "battletext_id": 44678
+            },
+            "sound_file": "sound/voice/vo_line/8206320_xlangx.scd",
+            "duration": 7
+        },
+        {
+            "intercept": {
+                "battletext_id": 13708
+            },
+            "game_text": {
+                "battletext_id": 44676
+            },
+            "sound_file": "sound/voice/vo_line/8206328_xlangx.scd",
+            "duration": 7
+        },
+        {
+            "intercept": {
+                "battletext_id": 13709
+            },
+            "game_text": {
+                "battletext_id": 44677
+            },
+            "sound_file": "sound/voice/vo_line/8206319_xlangx.scd",
+            "duration": 7
+        },
+        {
+            "intercept": {
+                "battletext_id": 24005
+            },
+            "game_text": {
+                "battletext_id": 44672
+            },
+            "sound_file": "sound/voice/vo_line/8206318_xlangx.scd",
+            "duration": 12
+        },
+        {
+            "intercept": {
+                "battletext_id": 24006
+            },
+            "game_text": {
+                "battletext_id": 44675
+            },
+            "sound_file": "sound/voice/vo_line/8206327_xlangx.scd",
+            "duration": 8
+        },
+        {
+            "intercept": {
+                "battletext_id": 24013
+            },
+            "game_text": {
+                "battletext_id": 44676
+            },
+            "sound_file": "sound/voice/vo_line/8206328_xlangx.scd",
+            "duration": 7
+        },
+        {
+            "name": {
+                "en": "Alexander",
+                "ja": "アレクサンダー",
+                "de": "Alexander",
+                "fr": "Alexander"
+            },
+            "intercept": {
+                "battletext_id": 24014
+            },
+            "game_text": {
+                "battletext_id": 44688
+            },
+            "sound_file": "sound/voice/vo_line/8206326_xlangx.scd",
+            "duration": 10
+        },
+        {
+            "name": {
+                "en": "Alexander",
+                "ja": "アレクサンダー",
+                "de": "Alexander",
+                "fr": "Alexander"
+            },
+            "intercept": {
+                "battletext_id": 24015
+            },
+            "game_text": {
+                "battletext_id": 44680
+            },
+            "sound_file": "sound/voice/vo_line/8206322_xlangx.scd",
+            "duration": 8
+        },
+        {
+            "intercept": {
+                "battletext_id": 24016
+            },
+            "game_text": {
+                "battletext_id": 44678
+            },
+            "sound_file": "sound/voice/vo_line/8206320_xlangx.scd",
+            "duration": 7
+        },
+        {
+            "intercept": {
+                "battletext_id": 24017
+            },
+            "game_text": {
+                "battletext_id": 44679
+            },
+            "sound_file": "sound/voice/vo_line/8206321_xlangx.scd",
+            "duration": 10
+        },
+        {
+            "intercept": {
+                "battletext_id": 24018
+            },
+            "game_text": {
+                "battletext_id": 44683
+            },
+            "sound_file": "sound/voice/vo_line/8206324_xlangx.scd",
+            "duration": 9
+        }
+    ]
+}
+

@@ -1,9 +1,8 @@
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using Dalamud.Storage.Assets;
 
-namespace Spaketh.Handlers;
+namespace SpakethPlugin.Handlers;
 
 #pragma warning disable 8618
 public class InterfaceManager

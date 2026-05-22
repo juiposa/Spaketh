@@ -1,10 +1,9 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Text;
-using Dalamud.Game.Config;
-using Dalamud.Utility;
+using Spaketh;
 
-namespace Spaketh.Handlers;
+namespace SpakethPlugin.Handlers;
 
 public class SoundManager
 {
@@ -18,11 +17,11 @@ public class SoundManager
 
     private bool _muted;
 
-    private Configuration config;
+    private Configuration _config;
 
     public SoundManager(Plugin plugin)
     {
-        config = plugin.Configuration;
+        _config = plugin.Configuration;
         InterfaceManager.GameInteropProvider.InitializeFromAttributes(this);
         _playSoundPath =
             Marshal.GetDelegateForFunctionPointer<PlaySoundDelegate>(InterfaceManager.SigScanner.ScanText(PlaySoundSig));
@@ -31,14 +30,14 @@ public class SoundManager
 
     public void PlaySound(String path)
     {
-        if (!config.IsEnabled)
+        if (!_config.IsEnabled)
         {
             return;
         }
 
-        Plugin.Log.Info($"Playing sound {path}");
+        Plugin.Log.Debug($"Playing sound {path}");
 
-        var localPath = path.Replace("xlangx", Language.GetClientLanguage());
+        var localPath = path.Replace("xlangx", Language.GetVoiceoverLanguage());
 
         var bytes = Encoding.ASCII.GetBytes(localPath);
         var ptr = Marshal.AllocHGlobal(bytes.Length + 1);

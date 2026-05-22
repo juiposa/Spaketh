@@ -1,0 +1,51 @@
+{
+    "id": "56624dd1-de11-4133-b1e7-39f6a9431d1f",
+    "notes": "Something descriptive about this playscript or some sorta context wrt it.",
+    "name": {
+        "en": "Example",
+        "ja": "実例",
+        "de": "Beispiel",
+        "fr": "Exemple"
+    },
+    "supported_languages": ["en", "ja", "de", "fr"],
+    "instance_ids": [1, 2, 3],
+    "lines": [
+        {
+            "name": {
+                "en": "Frank Reynolds",
+                "ja": "表示名",
+                "de": "Frank Reynolds",
+                "fr": "Frank Reynolds"
+            },
+            "intercept": {
+                "battletext_id": 6
+            },
+            "text": {
+                "en": "Anyway, I started blasting BAHH! BAHHH!",
+                "ja": "とにかく、私は発砲し始めた。パッ! パッ!",
+                "de": "Jedenfalls habe ich angefangen zu ballern. BAHH! BAHHH!",
+                "fr": "Bref, j'ai commencé à tirer à tout va. BAHH! BAHHH!"
+            },
+            "sound_file": "sound/spaketh/voice/examples/frank_1.scd",
+            "image_id": 241999,
+            "duration": 3
+        },
+        {
+            "name": {
+                "en": "Perfect Alexander",
+                "ja": "表示名",
+                "de": "Perfect Alexander",
+                "fr": "Perfect Alexander"
+            },
+            "intercept": {
+                "battletext_id": 28
+            },
+            "game_text": {
+                "battletext_id": 44678
+            },
+            "sound_file": "sound/voice/vo_line/8206320_xlangx.scd",
+            "duration": 7
+        }
+    ]
+}
+

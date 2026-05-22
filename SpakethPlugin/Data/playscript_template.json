@@ -1,0 +1,40 @@
+{
+    "id": "1b78bc34-c4a1-4582-9263-05d441f2c389",
+    "notes": "Something descriptive about this playscript or some sorta context wrt it.",
+    "name": {
+        "en": "Example",
+        "ja": "実例",
+        "de": "Beispiel",
+        "fr": "Exemple"
+    },
+    "supported_languages": ["en", "ja", "de", "fr"],
+    "instance_ids": [1, 2, 3],
+    "lines": [
+        {
+            "name": {
+                "en": "Name To Be Displayed",
+                "ja": "表示名",
+                "de": "Anzeigename",
+                "fr": "Nom à afficher"
+            },
+            "intercept": { 
+                "battletext_id": 54321,
+                "textbox_line": "TEXT_VOICEMAN_00000_000000_SOMEDUDE"
+            },
+            "text": {
+                "en": "Custom dialogue text.",
+                "ja": "対話文",
+                "de": "Benutzerdefinierter Dialogtext.",
+                "fr": "Texte de dialogue personnalisé."
+            },
+            "game_text": {
+                "battletext_id": 12345,
+                "textbox_line": "TEXT_VOICEMAN_00000_000000_SOMEOTHERDUDE"
+            },
+            "sound_file": "sound/spaketh/voice/myvapack/vo1_xlangx.scd",
+            "image_id": 199999,
+            "duration": 12
+        }
+    ]
+}
+

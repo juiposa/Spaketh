@@ -2,34 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dalamud.Hooking;
+using Dalamud.Interface;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using InteropGenerator.Runtime;
+using SpakethPlugin.Model;
 using static FFXIVClientStructs.FFXIV.Client.UI.UIModule.Delegates;
 
-namespace Spaketh.Handlers;
+namespace SpakethPlugin.Handlers;
 
 public sealed class GameHook : IDisposable
 {
-    private readonly Hook<ShowBattleTalk>? showBattleTalkHook;
-    private readonly Hook<ShowBattleTalkImage>? showBattleTalkImageHook;
-    private readonly Hook<ShowBattleTalkSound>? showBattleTalkSoundHook;
+    private readonly Hook<ShowBattleTalk>? _showBattleTalkHook;
+    private readonly Hook<ShowBattleTalkImage>? _showBattleTalkImageHook;
+    private readonly Hook<ShowBattleTalkSound>? _showBattleTalkSoundHook;
     
-
-    public static readonly List<uint> ActiveInstances = new List<uint> { 1205, 887, 583, 587 }; //Tuli Inn, TEA, A12, A12S
-
     internal unsafe GameHook(IGameInteropProvider interop)
     {
         try
         {
-            showBattleTalkHook =
+            _showBattleTalkHook =
                 interop.HookFromAddress<ShowBattleTalk>(
                     UIModule.StaticVirtualTablePointer->ShowBattleTalk, HookShowBattleTalk);
 
-            showBattleTalkImageHook = interop.HookFromAddress<ShowBattleTalkImage>(
+            _showBattleTalkImageHook = interop.HookFromAddress<ShowBattleTalkImage>(
                 UIModule.StaticVirtualTablePointer->ShowBattleTalkImage, HookShowBattleTalkImage);
 
-            showBattleTalkSoundHook = interop.HookFromAddress<ShowBattleTalkSound>(
+            _showBattleTalkSoundHook = interop.HookFromAddress<ShowBattleTalkSound>(
                 UIModule.StaticVirtualTablePointer->ShowBattleTalkSound, HookShowBattleTalkSound);
             StartHooks();
         }
@@ -42,59 +41,61 @@ public sealed class GameHook : IDisposable
     public void StartHooks()
     {
         Plugin.Log.Debug("Starting game hook");
-        showBattleTalkHook?.Enable();
-        showBattleTalkImageHook?.Enable();
-        showBattleTalkSoundHook?.Enable();
+        _showBattleTalkHook?.Enable();
+        _showBattleTalkImageHook?.Enable();
+        _showBattleTalkSoundHook?.Enable();
     }
 
     public void StopHooks()
     {
         Plugin.Log.Debug("Stopping game hook");
-        showBattleTalkHook?.Disable();
-        showBattleTalkImageHook?.Disable();
-        showBattleTalkSoundHook?.Disable();
+        _showBattleTalkHook?.Disable();
+        _showBattleTalkImageHook?.Disable();
+        _showBattleTalkSoundHook?.Disable();
     }
 
     private unsafe void HookShowBattleTalk(UIModule* self, CStringPointer sender, CStringPointer talk, float duration, byte style)
     {
         Plugin.Log.Debug($"HOOK {sender} {talk}");
-        var proceed = () => showBattleTalkHook!.Original(self, sender, talk, duration, style);
-        var intercept = (string n, string t, uint d) => showBattleTalkHook!.Original(self, Stocs(n), Stocs(t), d, style);
-        ProcessHook(sender.ToString(), talk.ToString(), proceed, intercept);
+        var proceed = () => _showBattleTalkHook!.Original(self, sender, talk, duration, style);
+        var intercept = (Playback p) => _showBattleTalkHook!.Original(self, Stocs(p.GetName(sender.ToString())), Stocs(p.Text), p.Duration, style);
+        ProcessHook(talk.ToString(), proceed, intercept);
     }
     
     private unsafe void HookShowBattleTalkImage(UIModule* self, CStringPointer sender, CStringPointer talk, float duration, uint image, byte style, int sound, uint entityId)
     {
-        Plugin.Log.Debug($"HOOK IMAGE {sender} {talk}");
-        var proceed = () => showBattleTalkImageHook!.Original(self, sender, talk, duration, image, style, sound, entityId);
-        var intercept = (string n, string t, uint d) => showBattleTalkImageHook!.Original(self, Stocs(n), Stocs(t), d, image, style, sound, entityId);
-        ProcessHook(sender.ToString(), talk.ToString(), proceed, intercept);
+        Plugin.Log.Debug($"HOOK IMAGE {image} {sender} {talk}");
+        var proceed = () => _showBattleTalkImageHook!.Original(self, sender, talk, duration, image, style, sound, entityId);
+        var intercept = (Playback p) => _showBattleTalkImageHook!.Original(self, Stocs(p.GetName(sender.ToString())), Stocs(p.Text), p.Duration, p.GetImage(image), style, sound, entityId);
+        ProcessHook(talk.ToString(), proceed, intercept);
     }
     
     private unsafe void HookShowBattleTalkSound(UIModule* self, CStringPointer sender, CStringPointer talk, float duration, int sound, byte style)
     {
         Plugin.Log.Debug($"HOOK SOUND {sender} {talk}");
-        var proceed = () => showBattleTalkSoundHook!.Original(self, sender, talk, duration, sound, style);
-        var intercept = (string n, string t, uint d) => showBattleTalkSoundHook!.Original(self, Stocs(n), Stocs(t), d, sound, style);
-        ProcessHook(sender.ToString(), talk.ToString(), proceed, intercept);
+        var proceed = () => _showBattleTalkSoundHook!.Original(self, sender, talk, duration, sound, style);
+        var intercept = (Playback p) => _showBattleTalkSoundHook!.Original(self, Stocs(p.GetName(sender.ToString())), Stocs(p.Text), p.Duration, sound, style);
+        ProcessHook(talk.ToString(), proceed, intercept);
     }
 
-    private void ProcessHook(string sender, string originalLine, Action proceed,  Delegate intercept)
+    private void ProcessHook(string originalLine, Action proceed, Delegate intercept)
     {
         
-        if (!ActiveInstances.Contains(Plugin.ClientState.TerritoryType))
+        if (!Plugin.TestMode && !Voicelines.IsInSupportedInstance())
         {
             Plugin.Log.Debug("SKIP Not in Supported Instance");
             proceed.Invoke();
             return;
         }
+
+        if (Plugin.TestMode)
+            Plugin.TestMode = false;
         
-        var (replacement, newDuration, newName) = Voicelines.ReplaceVoiceline(originalLine);
-        if (replacement != null)
+        var playback  = Voicelines.ReplaceVoiceline(originalLine);
+        if (playback != null)
         {
-            var callName = newName ?? sender;
-            Plugin.Log.Debug($"INTERCEPT {newName} {replacement}");
-            intercept.DynamicInvoke(callName, replacement, newDuration);
+            Plugin.Log.Debug($"INTERCEPT {playback.Name} {playback.Duration} {playback.GetImage(0)} {playback.Text}");
+            intercept.DynamicInvoke(playback);
             return;
         }
         proceed.Invoke();
@@ -111,8 +112,8 @@ public sealed class GameHook : IDisposable
 
     public void Dispose()
     {
-        showBattleTalkHook?.Dispose();
-        showBattleTalkImageHook?.Dispose();
-        showBattleTalkSoundHook?.Dispose();
+        _showBattleTalkHook?.Dispose();
+        _showBattleTalkImageHook?.Dispose();
+        _showBattleTalkSoundHook?.Dispose();
     }
 }

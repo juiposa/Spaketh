@@ -1,22 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Numerics;
-using System.Text.Json.Nodes;
 using Dalamud.Bindings.ImGui;
-using Dalamud.Game.Chat;
-using Dalamud.Interface.Textures;
-using Dalamud.Interface.Utility;
-using Dalamud.Interface.Utility.Raii;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.UI;
 using Lumina.Excel.Sheets;
-using Newtonsoft.Json;
-using SamplePlugin;
-using Spaketh.Handlers;
-using Spaketh.Model;
+using SpakethPlugin.Handlers;
 
-namespace Spaketh.Windows;
+namespace SpakethPlugin.Windows;
 
 public class MainWindow : Window, IDisposable
 {
@@ -24,6 +14,8 @@ public class MainWindow : Window, IDisposable
     private GameHook gameHook;
 
     private uint CurrentTerritory = 0;
+
+    private int imageOutMode = 0;
 
     // We give this window a hidden ID using ##.
     // The user will see "My Amazing Window" as window title,
@@ -61,14 +53,29 @@ public class MainWindow : Window, IDisposable
         //     
         // }
         
+        ImGui.Text($"Current client language is {Plugin.ClientState.ClientLanguage}");
+        ImGui.Text($"Current voice language is {Language.GetVoiceoverLanguageLumina()}");
         
+        ImGui.Spacing();
+        ImGui.Separator();
+        ImGui.Spacing();
         
-        ImGui.Text($"Current language is {Language.GetClientLanguage()}");
-        
-        if (ImGui.Button("Test"))
+        if (ImGui.Button("Test Existing Voiceover"))
         {
-            BattleTalk.ShowBattleTalk("Bug With a HUUUUUUGE Ass", 27, 5);
+            Plugin.TestMode = true;
+            BattleTalk.ShowBattleTalkImage("Not Alex", GameDialogue.GetBattletext(28), 5);
         }
+        ImGui.SameLine();
+        ImGui.Spacing();
+        ImGui.SameLine();
+        if (ImGui.Button("Test Custom Voiceover"))
+        {
+            Plugin.TestMode = true;
+            BattleTalk.ShowBattleTalkImage("Not Frank", GameDialogue.GetBattletext(6), 5);
+        }
+        
+        ImGui.Spacing();
+        ImGui.Separator();
         ImGui.Spacing();
         
         var territoryId = Plugin.ClientState.TerritoryType;
@@ -79,7 +86,7 @@ public class MainWindow : Window, IDisposable
             ImGui.Text(territoryRow.PlaceName.Value.Name.ToString() + " --- " + territoryId);
             ImGui.Text("Plugin is");
             ImGui.SameLine();
-            if (GameHook.ActiveInstances.Contains(territoryId))
+            if (Voicelines.IsInSupportedInstance())
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.3f, 0.9f, 0.4f, 1.0f));
                 ImGui.Text("ACTIVE");

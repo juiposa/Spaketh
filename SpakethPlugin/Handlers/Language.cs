@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using FFXIVClientStructs.FFXIV.Client.Game;
 
-namespace Spaketh.Handlers;
+namespace SpakethPlugin.Handlers;
 
 public static class Language
 {
@@ -13,24 +12,43 @@ public static class Language
         { 3, "fr" }
     };
 
-    private static readonly Dictionary<uint, Lumina.Data.Language> LuminaLanguages = new Dictionary<uint, Lumina.Data.Language>()
+    private static readonly Dictionary<string, Lumina.Data.Language> LuminaLanguages = new Dictionary<string, Lumina.Data.Language>()
     {
-        { 0, Lumina.Data.Language.Japanese },
-        { 1, Lumina.Data.Language.English },
-        { 2, Lumina.Data.Language.German },
-        { 3, Lumina.Data.Language.French }
+        { "ja", Lumina.Data.Language.Japanese },
+        { "en", Lumina.Data.Language.English },
+        { "de", Lumina.Data.Language.German },
+        { "fr", Lumina.Data.Language.French }
     };
     
-    public static string GetClientLanguage()
+    public static string GetVoiceoverLanguage()
     {
         uint lang = InterfaceManager.GameConfig.System.GetUInt("CutsceneMovieVoice");
         return AvailableLangauges[lang];
     }
 
-    public static Lumina.Data.Language GetLuminaLanguage()
+    public static string GetTextLanguage()
+    {
+        return AvailableLangauges[(uint)Plugin.ClientState.ClientLanguage];
+    }
+    
+    public static Lumina.Data.Language GetVoiceoverLanguageLumina()
     {
         
-        uint lang = InterfaceManager.GameConfig.System.GetUInt("CutsceneMovieVoice");
+        return GetLuminaLanguage(GetVoiceoverLanguage());
+    }
+
+    public static Lumina.Data.Language GetTextLanguageLumina()
+    {
+        return GetLuminaLanguage(GetTextLanguage());
+    }
+    
+    public static Lumina.Data.Language GetLuminaLanguage(string lang)
+    {
         return LuminaLanguages[lang];
+    }
+
+    public static string GetXivLanguage(Lumina.Data.Language lang)
+    {
+        return AvailableLangauges[(uint)lang - 1];
     }
 }

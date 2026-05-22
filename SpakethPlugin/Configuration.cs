@@ -1,8 +1,7 @@
 ﻿using System;
 using Dalamud.Configuration;
-using SamplePlugin;
 
-namespace Spaketh;
+namespace SpakethPlugin;
 
 [Serializable]
 public class Configuration : IPluginConfiguration

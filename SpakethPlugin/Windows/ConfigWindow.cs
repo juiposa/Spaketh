@@ -4,7 +4,7 @@ using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Windowing;
 using Spaketh;
 
-namespace SamplePlugin.Windows;
+namespace SpakethPlugin.Windows;
 
 public class ConfigWindow : Window, IDisposable
 {

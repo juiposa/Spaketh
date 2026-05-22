@@ -1,12 +1,12 @@
 using Lumina.Excel.Sheets;
 
-namespace Spaketh.Handlers;
+namespace SpakethPlugin.Handlers;
 
 public class Npc
 {
-    public static string GetNPCName(uint npcId)
+    public static string GetNpcName(uint npcId)
     {
-        var lang = Language.GetLuminaLanguage();
+        var lang = Language.GetTextLanguageLumina();
         var bnpcNames = InterfaceManager.DataManager.Excel.GetSheet<BNpcName>(
             lang, "BNpcName");
         return bnpcNames[npcId].Singular.ExtractText();
