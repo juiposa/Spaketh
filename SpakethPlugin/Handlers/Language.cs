@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SpakethPlugin.Handlers;
@@ -23,6 +24,10 @@ public static class Language
     public static string GetVoiceoverLanguage()
     {
         uint lang = InterfaceManager.GameConfig.System.GetUInt("CutsceneMovieVoice");
+        if (lang == UInt32.MaxValue) // "Adjust to Client"
+        {
+            return GetTextLanguage();
+        }
         return AvailableLangauges[lang];
     }
 
