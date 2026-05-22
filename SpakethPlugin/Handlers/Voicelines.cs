@@ -10,7 +10,7 @@ public static class Voicelines
 {
     private static Dictionary<string, Voiceline> _voicelines = new Dictionary<string, Voiceline>();
     private static List<Playscript> _playscripts = new List<Playscript>();
-    private static List<uint> _supportedInstances = new List<uint>();
+    private static List<uint> _supportedInstances = new List<uint>() {};
     static Voicelines()
     { 
         // get playscripts

@@ -3,6 +3,7 @@ using Dalamud.Interface.Windowing;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using FFXIVClientStructs.FFXIV.Client.UI;
 using Spaketh;
 using SpakethPlugin.Handlers;
 using SpakethPlugin.Windows;
@@ -66,6 +67,7 @@ public sealed class Plugin : IDalamudPlugin
         PluginInterface.UiBuilder.OpenMainUi += ToggleMainUi;
         
         InterfaceManager.Init(this, pluginInterface);
+        SetGameHooks();
     }
 
     public void Dispose()
@@ -85,12 +87,28 @@ public sealed class Plugin : IDalamudPlugin
         CommandManager.RemoveHandler(CommandName);
     }
 
-    private void OnCommand(string command, string args)
+    private unsafe void OnCommand(string command, string args)
     {
-        MainWindow.Toggle();
-        //Configuration.IsEnabled = !Configuration.IsEnabled;
+        Configuration.IsEnabled = !Configuration.IsEnabled;
+        SetGameHooks();
+        var mode = Configuration.IsEnabled ? "ENABLED" : "DISABLED";
+        ;
+        UIModule.Instance()->ShowText(0, $"Spaketh is now {mode}");
     }
     
     public void ToggleConfigUi() => ConfigWindow.Toggle();
     public void ToggleMainUi() => MainWindow.Toggle();
+
+    public void SetGameHooks()
+    {
+        if (Configuration.IsEnabled)
+        {
+            _gameHook.StartHooks();
+        }
+        else
+        {
+            _gameHook.StopHooks();
+        }
+        Configuration.Save();
+    }
 }

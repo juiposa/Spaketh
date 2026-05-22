@@ -11,7 +11,7 @@ public class DebugHooks : IDisposable
 
     internal unsafe DebugHooks(IGameInteropProvider interop)
     {
-        if (Plugin.ClientState.TerritoryType != 641)
+        if (Plugin.ClientState.TerritoryType != 0)
             return;
         try
         {
@@ -24,7 +24,7 @@ public class DebugHooks : IDisposable
         {
             Plugin.Log.Error($"Failed to start up hook {ex.Message}");
         }
-        _showImage.Enable();
+        _showImage?.Enable();
     }
 
     private unsafe void HookShowImage(UIModule* self, uint imageId, bool useLocalePath, int displayType, bool playSound)
@@ -35,6 +35,6 @@ public class DebugHooks : IDisposable
 
     public void Dispose()
     {
-        _showImage.Dispose();
+        _showImage?.Dispose();
     }
 }

@@ -52,6 +52,12 @@ public class MainWindow : Window, IDisposable
         //     }
         //     
         // }
+        var enabled = plugin.Configuration.IsEnabled;
+        if (ImGui.Checkbox("Spaketh Enabled", ref enabled))
+        {
+            plugin.Configuration.IsEnabled = enabled;
+            plugin.SetGameHooks();
+        }
         
         ImGui.Text($"Current client language is {Plugin.ClientState.ClientLanguage}");
         ImGui.Text($"Current voice language is {Language.GetVoiceoverLanguageLumina()}");
@@ -60,6 +66,9 @@ public class MainWindow : Window, IDisposable
         ImGui.Separator();
         ImGui.Spacing();
         
+        if (!plugin.Configuration.IsEnabled)
+            ImGui.BeginDisabled();
+                
         if (ImGui.Button("Test Existing Voiceover"))
         {
             Plugin.TestMode = true;
@@ -74,6 +83,9 @@ public class MainWindow : Window, IDisposable
             BattleTalk.ShowBattleTalkImage("Not Frank", GameDialogue.GetBattletext(6), 5);
         }
         
+        if (!plugin.Configuration.IsEnabled)
+            ImGui.EndDisabled();
+        
         ImGui.Spacing();
         ImGui.Separator();
         ImGui.Spacing();
@@ -86,19 +98,18 @@ public class MainWindow : Window, IDisposable
             ImGui.Text(territoryRow.PlaceName.Value.Name.ToString() + " --- " + territoryId);
             ImGui.Text("Plugin is");
             ImGui.SameLine();
-            if (Voicelines.IsInSupportedInstance())
+            if (!plugin.Configuration.IsEnabled)
             {
-                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(0.3f, 0.9f, 0.4f, 1.0f));
-                ImGui.Text("ACTIVE");
-                ImGui.PopStyleColor();
+                WindowUtils.DrawColoredWord("DISABLED", Colors.Purple);
+            } 
+            else if (Voicelines.IsInSupportedInstance())
+            {
+                WindowUtils.DrawColoredWord("ACTIVE", Colors.Green);
             }
             else
             {
-                ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1.0f, 0.35f, 0.35f, 1.0f));
-                ImGui.Text("INACTIVE");
-                ImGui.PopStyleColor();
+                WindowUtils.DrawColoredWord("INACTIVE", Colors.Red);
             }
-            
         }
         
     }

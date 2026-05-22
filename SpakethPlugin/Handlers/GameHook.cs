@@ -30,7 +30,6 @@ public sealed class GameHook : IDisposable
 
             _showBattleTalkSoundHook = interop.HookFromAddress<ShowBattleTalkSound>(
                 UIModule.StaticVirtualTablePointer->ShowBattleTalkSound, HookShowBattleTalkSound);
-            StartHooks();
         }
         catch (Exception ex)
         {
@@ -40,7 +39,7 @@ public sealed class GameHook : IDisposable
     
     public void StartHooks()
     {
-        Plugin.Log.Debug("Starting game hook");
+        Plugin.Log.Debug("Starting game hooks");
         _showBattleTalkHook?.Enable();
         _showBattleTalkImageHook?.Enable();
         _showBattleTalkSoundHook?.Enable();
@@ -48,7 +47,7 @@ public sealed class GameHook : IDisposable
 
     public void StopHooks()
     {
-        Plugin.Log.Debug("Stopping game hook");
+        Plugin.Log.Debug("Stopping game hooks");
         _showBattleTalkHook?.Disable();
         _showBattleTalkImageHook?.Disable();
         _showBattleTalkSoundHook?.Disable();
