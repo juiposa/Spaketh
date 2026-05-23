@@ -1,6 +1,7 @@
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
+using Penumbra.Api.Api;
 
 namespace SpakethPlugin.Handlers;
 
@@ -19,9 +20,12 @@ public class InterfaceManager
     
     public static SoundManager SoundManager { get; private set; }
 
+    public static Integration.Penumbra Penumbra { get; private set;}
+
     internal static void Init(Plugin plugin, IDalamudPluginInterface pluginInterface)
     {
         pluginInterface.Create<InterfaceManager>();
         SoundManager = new SoundManager(plugin);
+        Penumbra = new Integration.Penumbra(pluginInterface);
     }
 }

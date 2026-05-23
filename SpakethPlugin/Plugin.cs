@@ -4,6 +4,7 @@ using Dalamud.IoC;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using Penumbra.Api.Api;
 using Spaketh;
 using SpakethPlugin.Handlers;
 using SpakethPlugin.Windows;
@@ -20,7 +21,7 @@ public sealed class Plugin : IDalamudPlugin
     [PluginService] internal static IPluginLog Log { get; private set; } = null!;
 
     [PluginService] internal static ITextureProvider TextureProvider { get; private set; } = null!;
-
+    
     public static bool TestMode = false;
     
     private readonly IChatGui _chatGui;
@@ -44,9 +45,10 @@ public sealed class Plugin : IDalamudPlugin
         _gameHook = new GameHook(GameInteropProvider);
         _debugHooks = new DebugHooks(GameInteropProvider);
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
+        
 
         ConfigWindow = new ConfigWindow(this);
-        MainWindow = new MainWindow(this, _gameHook);
+        MainWindow = new MainWindow(this);
 
         //WindowSystem.AddWindow(ConfigWindow);
         WindowSystem.AddWindow(MainWindow);
@@ -67,6 +69,10 @@ public sealed class Plugin : IDalamudPlugin
         PluginInterface.UiBuilder.OpenMainUi += ToggleMainUi;
         
         InterfaceManager.Init(this, pluginInterface);
+        
+        TestingExample.CheckExampleMod();
+        Voicelines.Init();
+        
         SetGameHooks();
     }
 

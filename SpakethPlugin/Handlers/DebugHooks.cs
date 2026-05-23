@@ -24,6 +24,7 @@ public class DebugHooks : IDisposable
         {
             Plugin.Log.Error($"Failed to start up hook {ex.Message}");
         }
+        Plugin.Log.Info("Debug hook started");
         _showImage?.Enable();
     }
 
