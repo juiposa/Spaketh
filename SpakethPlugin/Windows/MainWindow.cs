@@ -28,7 +28,7 @@ public class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
-        var enabled = plugin.Configuration.IsEnabled;
+        var enabled = plugin.Configuration.IsEnabled; 
         if (ImGui.Checkbox("Spaketh Enabled", ref enabled))
         {
             plugin.Configuration.IsEnabled = enabled;
@@ -116,7 +116,7 @@ public class MainWindow : Window, IDisposable
     public void DrawExampleInstall()
     {
         var installModAction = TestingExample.EnsureExampleMod;
-        var installMessage = "Spaketh needs to install a Penumbra mod\nto enable the test custom voiceover. Install?";
+        var installMessage = "Spaketh needs to install a Penumbra mod\nto enable the custom voiceover test.\nThe mod will be enabled in the collection\n you have set on 'Interface'. Install?";
         var popupId = WindowUtils.ConfirmationDialogue("TestingExampleInstall", installMessage, "Yes", "No", installModAction, WindowUtils.ClosePopupAction());
         if (ImGui.Button("Install Example Voiceover?"))
         {

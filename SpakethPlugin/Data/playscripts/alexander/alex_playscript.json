@@ -64,8 +64,11 @@
             "intercept": {
                 "battletext_id": 24006
             },
-            "game_text": {
-                "battletext_id": 44675
+            "text": {
+                "en": "To thy soul...I bring order immutable... My judgement...is final...",
+                "ja": "n/a",
+                "de": "n/a",
+                "fr": "n/a"
             },
             "sound_file": "sound/voice/vo_line/8206327_xlangx.scd",
             "duration": 8
@@ -90,11 +93,14 @@
             "intercept": {
                 "battletext_id": 24014
             },
-            "game_text": {
-                "battletext_id": 44688
+            "text": {
+                "en": "I am...Alexander...\nThe fearful...shall be embraced... The bold...shall know oblivion...",
+                "ja": "n/a",
+                "de": "n/a",
+                "fr": "n/a"
             },
             "sound_file": "sound/voice/vo_line/8206326_xlangx.scd",
-            "duration": 10
+            "duration": 12
         },
         {
             "name": {

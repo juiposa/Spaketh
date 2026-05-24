@@ -55,20 +55,20 @@ public static class TestingExample
     {
         if (!forceCheck && !HasLapsed(ExampleModLastCheck))
             return ExampleModState;
-        Plugin.Log.Debug($"Checking example mod state");
+        //Plugin.Log.Debug($"Checking example mod state");
         ExampleModLastCheck = DateTime.Now;
         FetchModList(forceCheck);
         foreach (var mod in ModList)
         {
             if (mod.Value.Equals(GetCurrentModVersion())) //check if the mod is installed
             {
-                Plugin.Log.Debug("Example mod is installed and at the correct version");
+                //Plugin.Log.Debug("Example mod is installed and at the correct version");
                 ExampleModState = true;
                 return ExampleModState;
             } 
             else if (mod.Value.StartsWith(ExampleModName)) // an old version is installed
             {
-                Plugin.Log.Debug("Example mod is installed but needs to be updated");
+                //Plugin.Log.Debug("Example mod is installed but needs to be updated");
                 //InterfaceManager.Penumbra.DeleteMod.Invoke(mod.ToString(), mod.Value); //delete older version
                 ExampleModState = false; //return false to prompt a reinstall
                 return ExampleModState;
@@ -78,8 +78,8 @@ public static class TestingExample
                 ExampleModState = false;
             }
         }
-        if (!ExampleModState)
-                Plugin.Log.Debug("Example mod is not installed");
+        //if (!ExampleModState)
+                //Plugin.Log.Debug("Example mod is not installed");
         return ExampleModState;
     }
 
@@ -92,7 +92,7 @@ public static class TestingExample
     {
         if (forced || HasLapsed(ModListLastFetched))
         {
-            Plugin.Log.Debug("Fetching mod list");
+            //Plugin.Log.Debug("Fetching mod list");
             ModList = InterfaceManager.Penumbra.GetModList.Invoke();
             ModListLastFetched = DateTime.Now;
         }

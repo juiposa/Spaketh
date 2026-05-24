@@ -4,7 +4,7 @@
     "Punchline": "What if Alexander spoke?",
     "Description": "Plays the voicelines of voiced bosses on unvoiced ones.\nCurrently supported:\n\t- Alexander Resurrected (Windurst) -> Alexander Prime and Perfect Alex",
     "InternalName": "SpakethPlugin",
-    "AssemblyVersion": "0.0.4.0",
+    "AssemblyVersion": "0.0.5.0",
     "ApplicableVersion": "any",
     "Tags": [
         "plugin"
@@ -17,7 +17,7 @@
     "IconUrl": "",
     "AcceptsFeedback": true,
     "IsTestingExclusive": "False",
-    "DownloadLinkInstall": "https://github.com/juiposa/Spaketh/releases/download/v0.0.4/latest.zip",
-    "DownloadLinkTesting": "https://github.com/juiposa/Spaketh/releases/download/v0.0.4/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/juiposa/Spaketh/releases/download/v0.0.4/latest.zip"
+    "DownloadLinkInstall": "https://github.com/juiposa/Spaketh/releases/download/v0.0.5/latest.zip",
+    "DownloadLinkTesting": "https://github.com/juiposa/Spaketh/releases/download/v0.0.5/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/juiposa/Spaketh/releases/download/v0.0.5/latest.zip"
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Newtonsoft.Json;
 using Spaketh.Model;
 using SpakethPlugin.Model;
@@ -29,7 +31,7 @@ public static class Voicelines
             _supportedInstances.AddRange(data.InstanceIds);
             foreach (var value in data.Lines)
             {
-                var key = GameDialogue.GetInterceptLine(value);
+                var key = EncodeKey(GameDialogue.GetInterceptLine(value));
                 _voicelines[key] = value;
             }
         }
@@ -38,7 +40,8 @@ public static class Voicelines
     
     public static Playback? ReplaceVoiceline(string original)
     {
-        if (_voicelines.TryGetValue(original, out var vl)) // if there is a mapping 
+        var encodedKey = EncodeKey(original);
+        if (_voicelines.TryGetValue(encodedKey, out var vl)) // if there is a mapping 
         {
             PlayVoiceline(vl); // play the voiceline
             return new Playback
@@ -61,5 +64,14 @@ public static class Voicelines
     public static bool IsInSupportedInstance()
     {
         return _supportedInstances.Contains(Plugin.ClientState.TerritoryType);
+    }
+
+    private static string EncodeKey(string key)
+    {
+        key = key.Replace(" ", "");
+        key = key.Replace("\r", "");
+        key = key.Replace("\n", "");
+        key = key.Replace("\t", "");
+        return System.Convert.ToBase64String(Encoding.UTF8.GetBytes(key));
     }
 }
